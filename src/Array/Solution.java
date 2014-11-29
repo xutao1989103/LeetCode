@@ -1,7 +1,6 @@
 package Array;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by 431 on 2014/11/27.
@@ -298,17 +297,137 @@ public class Solution {
         return (int)res;
     }
 
+    public static int[] twoSumTimeout(int[] numbers, int target) {
+        int[] result=new int[2];
+        int counts=numbers.length;
+        if(counts<2){
+            return null;
+        }
+        for(int i=0;i<counts;i++){
+            for(int j=0;j<counts;j++){
+                if(numbers[j]+numbers[i]==target){
+                    result[0]=i+1;
+                    result[1]=j+1;
+                    return result;
+                }
+            }
+        }
+        return result;
+    }
+    public static int[] twoSum(int[] numbers, int target) {
+        int[] result=new int[2];
+        int counts=numbers.length;
+        if(counts<2){
+            return null;
+        }
+        HashMap<Integer,Integer> hashMap=new HashMap<Integer, Integer>();
+        for(int i=0;i<counts;i++){
+            hashMap.put(numbers[i],i);
+        }
+        for(int i=0;i<counts;i++){
+            int rest=target-numbers[i];
+           if(hashMap.get(rest)!=null&&hashMap.get(rest)>i){
+               result[0]=i+1;
+               result[1]=hashMap.get(rest)+1;
+           }
+        }
+
+        return result;
+    }
+
+    private static int binarySerch(int[] numbers, int target){
+        int result=-1;
+        int left=0;
+        int right=numbers.length-1;
+        int mid=(left+right)/2;
+        while(left<=right){
+            if(numbers[mid]==target){
+                return mid;
+            }else if(numbers[mid]<target){
+                left=mid+1;
+            }else {
+                right=mid-1;
+            }
+        }
+        return result;
+    }
+
+    public static int minimumTotalDp(List<List<Integer>> triangle){
+        if(triangle.size()==0){
+            return 0;
+        }
+        if(triangle.size()==1){
+            return triangle.get(0).get(0);
+        }
+        for(int i=triangle.size()-2;i>=0;i--){
+            List<Integer> nextRow=triangle.get(i+1);
+            for(int j=0;j<i+1;j++){
+                int sum=Math.min(nextRow.get(j),nextRow.get(j+1))+triangle.get(i).get(j);
+                triangle.get(i).set(j,sum);
+            }
+        }
+        return triangle.get(0).get(0);
+    }
+
+    public static int minimumTotal(List<List<Integer>> triangle) {
+        if(triangle.size()==0){
+            return 0;
+        }
+        if(triangle.size()==1){
+            return triangle.get(0).get(0);
+        }
+        int left=minimumTotal(subLists(triangle,true));
+        int right=minimumTotal(subLists(triangle,false));
+        return triangle.get(0).get(0)+left<right?left:right;
+    }
+    public static List<List<Integer>> subLists(List<List<Integer>> lists,boolean left){
+        List<List<Integer>> result=new ArrayList<List<Integer>>();
+        for(int i=1;i<lists.size();i++){
+            List list=lists.get(i);
+            if(left){
+                list.remove(list.size()-1);
+            }else {
+                list.remove(0);
+            }
+            result.add(list);
+        }
+        return result;
+    }
+
+    public static List<List<Integer>> subsets(int[] S) {
+        List<List<Integer>> result=new ArrayList<List<Integer>>();
+        List<Integer> empty=new ArrayList<Integer>();
+        result.add(empty);
+        int length=S.length;
+        if(length==0){
+            return result;
+        }
+        for(int i=0;i<length;i++){
+            insertOne(result,S[i]);
+        }
+        return result;
+    }
+    public static void insertOne(List<List<Integer>> lists,int value){
+        List<List<Integer>> temp=new ArrayList<List<Integer>>();
+        for(int i=0;i<lists.size();i++){
+            List<Integer> tempList=new ArrayList<Integer>();
+            for(int j=0;j<lists.get(i).size();j++){
+               tempList.add(lists.get(i).get(j));
+            }
+            temp.add(tempList);
+        }
+        for(List<Integer> intList:temp){
+
+            intList.add(value);
+        }
+        lists.addAll(temp);
+    }
 
     public static void main(String[] args){
-        int A[]={1,0};
-        int B[]={2};
-        int[][] grid={{0,0,0,0},{0,1,0,0},{0,0,0,0},{0,0,1,0},{0,0,0,0}};
-        char[][] board={{'a','b','c','e'},{'s','f','c','s'},{'a','d','e','e'}};
-        //char[][] board={{'a','a'}};
-        String word="abfcsee";
-        int result=uniquePathsWithObstacles(grid);
-        int elem=5;
-        merge(A,1,B,1);
+
+        int[] input={1,2,3,4};
+        List<List<Integer>> result=subsets(input);
+
         System.out.println(result);
     }
 }
