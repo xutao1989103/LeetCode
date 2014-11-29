@@ -425,7 +425,7 @@ public class Solution {
 
     public static void main(String[] args){
 
-        int[] input={1,2,3,4};
+        int[] input={3,2,1};
         List<List<Integer>> result=subsets(input);
 
         System.out.println(result);
