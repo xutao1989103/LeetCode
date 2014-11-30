@@ -403,7 +403,7 @@ public class Solution {
             return result;
         }
         for(int i=0;i<length;i++){
-            insertOne(result,S[i]);
+            insertOneNotDuplicate(result,S[i]);
         }
         return result;
     }
@@ -419,13 +419,34 @@ public class Solution {
         for(List<Integer> intList:temp){
 
             intList.add(value);
+            Collections.sort(intList);
         }
         lists.addAll(temp);
     }
 
+    public static void insertOneNotDuplicate(List<List<Integer>> lists,int value){
+        List<List<Integer>> temp=new ArrayList<List<Integer>>();
+        for(int i=0;i<lists.size();i++){
+            List<Integer> tempList=new ArrayList<Integer>();
+            for(int j=0;j<lists.get(i).size();j++){
+                tempList.add(lists.get(i).get(j));
+            }
+            temp.add(tempList);
+        }
+        for(List<Integer> intList:temp){
+            intList.add(value);
+            Collections.sort(intList);
+        }
+        for(List<Integer> list:temp){
+            if(!lists.contains(list)){
+                lists.add(list);
+            }
+        }
+    }
+
     public static void main(String[] args){
 
-        int[] input={3,2,1};
+        int[] input={2,2,1};
         List<List<Integer>> result=subsets(input);
 
         System.out.println(result);
