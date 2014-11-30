@@ -403,7 +403,7 @@ public class Solution {
             return result;
         }
         for(int i=0;i<length;i++){
-            insertOneNotDuplicate(result,S[i]);
+            insertOneNotDuplicate(result, S[i]);
         }
         return result;
     }
@@ -444,11 +444,56 @@ public class Solution {
         }
     }
 
+    public static List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result=new ArrayList<Integer>();
+        if(matrix.length==0){
+            return result;
+        }
+        if(matrix.length==1){
+            for(int j=0;j<matrix[0].length;j++){
+                result.add(matrix[0][j]);
+            }
+            return result;
+        }
+        if(matrix[0].length==1){
+            for(int j=0;j<matrix.length;j++){
+                result.add(matrix[j][0]);
+            }
+            return result;
+        }
+        for(int i=0;i<(Math.min(matrix.length,matrix[0].length)+1)/2;i++){
+            result.addAll(oneRound(i,i,matrix));
+        }
+        return result;
+    }
+    public static List<Integer> oneRound(int x,int y,int[][] matrix){
+        int gap=x;
+        List<Integer> result= new ArrayList<Integer>();
+        int length=matrix.length;
+        int height=matrix[0].length;
+        while (y<height-1-gap){
+            result.add(matrix[x][y]);
+            y++;
+        }
+        while (x<length-1-gap){
+            result.add(matrix[x][y]);
+            x++;
+        }
+        while (y>gap){
+            result.add(matrix[x][y]);
+            y--;
+        }
+        while (x>gap){
+            result.add(matrix[x][y]);
+            x--;
+        }
+        return result;
+    }
+
     public static void main(String[] args){
 
-        int[] input={2,2,1};
-        List<List<Integer>> result=subsets(input);
-
+        int[][] input={{1,2,3},{4,5,6},{7,8,9}};
+        List<Integer> result=spiralOrder(input);
         System.out.println(result);
     }
 }
