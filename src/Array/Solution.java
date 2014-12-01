@@ -444,6 +444,232 @@ public class Solution {
         }
     }
 
+    public static List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result=new ArrayList<Integer>();
+        if(matrix.length==0){
+            return result;
+        }
+        int rowStart=0;
+        int columStart=0;
+        int rowEnd=matrix.length-1;
+        int columEnd=matrix[0].length-1;
+        while (rowStart<=rowEnd&&columStart<=columEnd){
+            for(int i=columStart;i<=columEnd;i++){
+                result.add(matrix[rowStart][i]);
+            }
+            rowStart++;
+            for(int i=rowStart;i<=rowEnd;i++){
+                result.add(matrix[i][columEnd]);
+            }
+            columEnd--;
+            if(rowStart<=rowEnd){
+                for (int i=columEnd;i>=columStart;i--){
+                    result.add(matrix[rowEnd][i]);
+                }
+            }
+            rowEnd--;
+            if(columStart<=columEnd){
+                for(int i=rowEnd;i>=rowStart;i--){
+                    result.add(matrix[i][columStart]);
+                }
+            }
+            columStart++;
+        }
+        return result;
+    }
+
+    public static int[][] generateMatrix(int n) {
+        int[][] result=new int[n][n];
+        if(n==0){
+            return result;
+        }
+        int rowStart=0;
+        int columStart=0;
+        int rowEnd=n-1;
+        int columEnd=n-1;
+        int num=1;
+        while (rowStart<=rowEnd&&columStart<=columEnd){
+            for(int i=columStart;i<=columEnd;i++){
+                result[rowStart][i]=num;
+                num++;
+            }
+            rowStart++;
+            for(int i=rowStart;i<=rowEnd;i++){
+                result[i][columEnd]=num;
+                num++;
+            }
+            columEnd--;
+            if(rowStart<=rowEnd){
+                for (int i=columEnd;i>=columStart;i--){
+                    result[rowEnd][i]=num;
+                    num++;
+                }
+            }
+            rowEnd--;
+            if(columStart<=columEnd){
+                for(int i=rowEnd;i>=rowStart;i--){
+                    result[i][columStart]=num;
+                    num++;
+                }
+            }
+            columStart++;
+        }
+        return result;
+    }
+
+    public static void sortColors(int[] A) {
+        Arrays.sort(A);
+    }
+
+    public static void setZeroes(int[][] matrix) {
+        if(matrix.length==0){
+            return;
+        }
+        int[] row=new int[matrix.length];
+        int[] col=new int[matrix[0].length];
+        for(int i=0;i<row.length;i++){
+            for(int j=0;j<col.length;j++){
+                if(matrix[i][j]==0){
+                    row[i]=1;
+                    col[j]=1;
+                }
+            }
+        }
+        for(int i=0;i<row.length;i++){
+            if(row[i]==1){
+                for(int j=0;j<col.length;j++){
+                    matrix[i][j]=0;
+                }
+            }
+        }
+        for(int i=0;i<col.length;i++){
+            if(col[i]==1){
+                for(int j=0;j<row.length;j++){
+                    matrix[j][i]=0;
+                }
+            }
+        }
+    }
+
+    public static int searchInsert(int[] A, int target) {
+        int result=0;
+        if(A.length==0){
+            return result;
+        }
+        for(int i=0;i<A.length;i++){
+            if(A[i]>=target){
+                return i;
+            }
+        }
+        result=A.length;
+        return result;
+    }
+
+    public static int search(int[] A, int target) {
+        if (A == null || A.length == 0) return -1;
+        int left = 0;
+        int right = A.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (A[mid] == target) {
+                return mid;
+            }
+            if (A[left] <= A[mid]) {
+                if (A[left] <= target && target < A[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            } else {
+                if (A[mid] < target && target <= A[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public static int binarySearch(int[] A,int target){
+        int left=0;
+        int right=A.length-1;
+        int mid;
+        while (left<=right){
+            mid=(left+right)/2;
+            if(target==A[mid]){
+                return mid;
+            }else if(target<A[mid]){
+                right=mid-1;
+            }else {
+                left=mid+1;
+            }
+        }
+        return -1;
+    }
+
+    public static int[] searchRange(int[] A, int target) {
+        int[] result={-1,-1};
+        int position=binarySearch(A,target);
+        if(position==-1){
+            return result;
+        }
+        int start=position;
+        int end=position;
+        while(end<A.length&&A[end]==target){
+            end++;
+        }
+        end--;
+        while (start>=0&&A[start]==target){
+            start--;
+        }
+        start++;
+        result[0]=start;
+        result[1]=end;
+        return result;
+    }
+
+    public static boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix.length==0){
+            return false;
+        }
+        int rows=matrix.length;
+        int cols=matrix[0].length;
+        if(target<matrix[0][0]||target>matrix[rows-1][cols-1]){
+            return false;
+        }
+        int rownum=searchRow(matrix,target);
+        int colnum=binarySearch(matrix[rownum],target);
+        if(colnum!=-1){
+            return true;
+        }
+
+        return false;
+    }
+    public static int searchRow(int[][] matrix,int target){
+        int rows=matrix.length;
+        int cols=matrix[0].length-1;
+        int left=0;
+        int right=rows-1;
+        int mid;
+        if(rows==1){
+            return 0;
+        }
+        while (left<=right){
+            mid=(left+right)/2;
+            if(target==matrix[mid][cols]||(target>matrix[mid-1][cols]&&target<matrix[mid][cols])){
+                return mid;
+            }
+            if(target<matrix[mid][cols]){
+                right=mid-1;
+            }
+            if(target>matrix[mid][cols]){
+                left=mid+1;
+            }
+        }
+        return -1;
+    }
+
     public static void main(String[] args){
 
         int[] input={2,2,1};
