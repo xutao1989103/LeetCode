@@ -471,6 +471,10 @@ public class Solution {
         List<Integer> result= new ArrayList<Integer>();
         int length=matrix.length;
         int height=matrix[0].length;
+        if((matrix.length-1)/2==x){
+            result.add(matrix[x][x]);
+            return result;
+        }
         while (y<height-1-gap){
             result.add(matrix[x][y]);
             y++;
@@ -490,10 +494,53 @@ public class Solution {
         return result;
     }
 
+    public static  boolean searchMatrix(int[][] matrix,int target){
+        return false;
+    }
+
+    public static void rotateNotClockWise(int[][] matrix){
+        if(matrix.length==0){
+            return;
+        }
+        int row=matrix.length;
+        int col=matrix[0].length;
+        for(int i=0;i<row;i++){
+            for(int j=i;j<col;j++){
+                int temp=matrix[i][j];
+                matrix[i][j]=matrix[j][i];
+                matrix[j][i]=temp;
+            }
+        }
+    }
+
+    public static void exchange(int[][] matrix){
+        int row=matrix.length;
+        int col=matrix[0].length;
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col/2;j++){
+                int temp=matrix[i][j];
+                matrix[i][j]=matrix[i][col-1-j];
+                matrix[i][col-1-j]=temp;
+            }
+        }
+    }
+
+    public static void rotate(int[][] matrix){
+        if(matrix.length==0){
+            return;
+        }
+        rotateNotClockWise(matrix);
+        exchange(matrix);
+    }
+
     public static void main(String[] args){
 
         int[][] input={{1,2,3},{4,5,6},{7,8,9}};
-        List<Integer> result=spiralOrder(input);
-        System.out.println(result);
+        boolean rotate=searchMatrix(input,5);
+        rotate(input);
+        System.out.println(Arrays.toString(input[0]));
+        System.out.println(Arrays.toString(input[1]));
+        System.out.println(Arrays.toString(input[2]));
+
     }
 }
