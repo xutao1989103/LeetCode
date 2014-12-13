@@ -166,14 +166,39 @@ public class LinkedList {
         return root.next;
     }
 
+    public static ListNode partition(ListNode head, int x) {
+        ListNode dummy=new ListNode(0);
+        dummy.next=head;
+        ListNode p=dummy;
+        ListNode tail=dummy;
+        while(p!=null && p.next!=null){
+            if(p.next.val>=x)
+                p=p.next;
+            else{
+                if(p==tail){  // don't forget the edge cases when p==tail
+                    tail=tail.next;
+                    p=p.next;
+                }
+                else{
+                    ListNode tmp=p.next;
+                    p.next=tmp.next;
+                    tmp.next=tail.next;
+                    tail.next=tmp;
+                    tail=tmp; // don't forget to move tail.
+                }
+            }
+        }
+        return dummy.next;
+    }
+
     public static void main(String[] args) {
         ListNode listNode = new ListNode(1);
         listNode.next = new ListNode(1);
-        listNode.next.next = new ListNode(3);
-        listNode.next.next.next = new ListNode(3);
-        listNode.next.next.next.next = new ListNode(5);
+//        listNode.next.next = new ListNode(1);
+//        listNode.next.next.next = new ListNode(2);
+//        listNode.next.next.next.next = new ListNode(5);
         ListNode node = listNode;
-        node=deleteAllDuplicates(node);
+        node=partition(node, 2);
         while (node != null) {
             System.out.print(node.val + "->");
             node = node.next;
