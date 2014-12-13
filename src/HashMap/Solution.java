@@ -1,5 +1,6 @@
 package HashMap;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -133,42 +134,66 @@ public class Solution {
     }
 
     public static List<String> anagrams(String[] strs) {
-        List<String> result=new ArrayList<String>();
-        if(strs.length==0){
+        List<String> result = new ArrayList<String>();
+        if (strs.length == 0) {
             return result;
         }
-        HashMap<Character,Integer> map=new HashMap();
-        for(String s:strs){
-           if(isAllEqual(s,map)){
-               for(int i=1;i<s.length();i++){
-                   map.put(s.charAt(i),map.get(s.charAt(i))==null?1:map.get(s.charAt(i))+1);
-               }
-               result.add(s);
-
-           }
+        HashMap<String, List<Integer>> count = new HashMap<String, List<Integer>>();
+        for (int i = 0; i < strs.length; i++) {
+            char[] chars = strs[i].toCharArray();
+            Arrays.sort(chars);
+            String string = String.valueOf(chars);
+            if (count.get(string) == null) {
+                List list = new ArrayList();
+                list.add(i);
+                count.put(string, list);
+            } else {
+                count.get(string).add(i);
+            }
+        }
+        Iterator iterator = count.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            if (((List) entry.getValue()).size() > 1) {
+                for (Integer i : (List<Integer>) entry.getValue()) {
+                    result.add(strs[i]);
+                }
+            }
         }
         return result;
     }
 
-    public static boolean isAllEqual(String string,HashMap map){
-        int len=string.length();
-        if(len==1){
+    public static boolean isAllEqual(String string, HashMap map) {
+        int len = string.length();
+        if (len == 1) {
             return true;
         }
-        for(int i=1;i<len;i++){
-            if(map.get(string.charAt(i-1))!=map.get(string.charAt(i))){
+        for (int i = 1; i < len; i++) {
+            if (map.get(string.charAt(i - 1)) != map.get(string.charAt(i))) {
                 return false;
             }
         }
         return true;
     }
 
+    public static List<List<Integer>> fourSum(int[] num, int target) {
+        List<List<Integer>> result=new LinkedList<List<Integer>>();
+        Arrays.sort(num);
+        HashMap map=new HashMap();
+        for(int i=0;i<num.length;i++){
+            map.put(num[i],target-num[i]);
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         char[][] input = {};
-        int[] in = {2, 2, 1};
+        int[] in = {1, 0, -1, 0, 2, -2};
         String s = "ss";
-        int iResult = singleNumber(in);
-        String[] strings={"eat","tea","aet","aes","sss"};
-        System.out.println( anagrams(strings));
+        String[] strings = {"eat", "tea", "aet", "aes", "sss"};
+        for(List list:fourSum(in,0)){
+            System.out.println(list);
+        }
+        System.out.println();
     }
 }
