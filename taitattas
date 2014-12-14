@@ -1,0 +1,159 @@
+[33mtag v1.0[m
+Tagger: xutao1989103 <xutao1989103@gmail.com>
+Date:   Sat Dec 13 21:48:50 2014 +0800
+
+my first tag
+
+[33mcommit 9b3ae6001d4886bf3b60e2b91766ee40e7d1c6cd[m
+Author: xutao1989103 <xutao1989103@gmail.com>
+Date:   Sat Dec 13 17:16:12 2014 +0800
+
+    list
+
+[1mdiff --git a/src/Array/LinkedList.java b/src/Array/LinkedList.java[m
+[1mindex 21a9423..77387eb 100644[m
+[1m--- a/src/Array/LinkedList.java[m
+[1m+++ b/src/Array/LinkedList.java[m
+[36m@@ -1,5 +1,8 @@[m
+ package Array;[m
+ [m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m[32mimport java.util.List;[m
+[32m+[m
+ /**[m
+  * Created by 431 on 2014/12/11.[m
+  */[m
+[36m@@ -47,12 +50,130 @@[m [mpublic class LinkedList {[m
+         return head;[m
+     }[m
+ [m
+[32m+[m[32m    public static ListNode rotateRight(ListNode head, int n) {[m
+[32m+[m[32m        if (head == null || head.next == null) {[m
+[32m+[m[32m            return head;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        ListNode temp = new ListNode(0);[m
+[32m+[m[32m        temp.next = head;[m
+[32m+[m[32m        ListNode pre = temp;[m
+[32m+[m[32m        ListNode aft = temp;[m
+[32m+[m[32m        int i;[m
+[32m+[m[32m        for (i = 0; pre.next != null; i++) {[m
+[32m+[m[32m            pre = pre.next;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        for (int j = i - (n % i); j > 0; j--) {[m
+[32m+[m[32m            aft = aft.next;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        pre.next = head;[m
+[32m+[m[32m        head = aft.next;[m
+[32m+[m[32m        aft.next = null;[m
+[32m+[m[32m        return head;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public static ListNode reverseBetween(ListNode head, int m, int n) {[m
+[32m+[m[32m        if (head == null || head.next == null || m == n) return head;[m
+[32m+[m[32m        ListNode p = new ListNode(0);[m
+[32m+[m[32m        ListNode p1 = new ListNode(0);[m
+[32m+[m[32m        p.next = head;[m
+[32m+[m[32m        p1 = p;[m
+[32m+[m[32m        for (int i = 1; i < m; i++) {[m
+[32m+[m[32m            p = p.next;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        ListNode p3 = p.next;[m
+[32m+[m[32m        for (int i = m; i < n; i++) {[m
+[32m+[m[32m            ListNode temp = p3.next.next;[m
+[32m+[m[32m            p3.next.next=p.next;[m
+[32m+[m[32m            p.next=p3.next;[m
+[32m+[m[32m            p3.next=temp;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        return p1.next;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public static void reorderList(ListNode head) {[m
+[32m+[m[32m        if(head == null || head.next == null) return;[m
+[32m+[m[32m        List<ListNode> arrayNode=new ArrayList<ListNode>();[m
+[32m+[m[32m        for(ListNode node=head;node!=null;node=node.next) arrayNode.add(node);[m
+[32m+[m[32m        int i=0;[m
+[32m+[m[32m        int j=arrayNode.size()-1;[m
+[32m+[m[32m        for(;i<j;i++,j--){[m
+[32m+[m[32m            arrayNode.get(i).next=arrayNode.get(j);[m
+[32m+[m[32m            arrayNode.get(j).next=arrayNode.get(i+1);[m
+[32m+[m[32m        }[m
+[32m+[m[32m        arrayNode.get(i).next=null;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public static ListNode removeNthFromEnd(ListNode head, int n) {[m
+[32m+[m[32m        if(head == null) return head;[m
+[32m+[m[32m        ListNode root=new ListNode(0);[m
+[32m+[m[32m        root.next=head;[m
+[32m+[m[32m        ListNode pre=root;[m
+[32m+[m[32m        ListNode aft=root;[m
+[32m+[m[32m        int i=0;[m
+[32m+[m[32m        while (pre.next!=null){[m
+[32m+[m[32m            if(i>=n){[m
+[32m+[m[32m                aft=aft.next;[m
+[32m+[m[32m            }[m
+[32m+[m[32m            i++;[m
+[32m+[m[32m            pre=pre.next;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        aft.next=aft.next.next;[m
+[32m+[m[32m        return root.next;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public static ListNode deleteDuplicates(ListNode head) {[m
+[32m+[m[32m        if(head == null || head.next ==  null) return head;[m
+[32m+[m[32m        ListNode pre=head.next;[m
+[32m+[m[32m        ListNode aft=head;[m
+[32m+[m[32m        while (pre!=null){[m
+[32m+[m[32m            if(pre.val==aft.val){[m
+[32m+[m[32m                aft.next=pre.next;[m
+[32m+[m[32m                pre=pre.next;[m
+[32m+[m[32m            }else {[m
+[32m+[m[32m                pre= pre.next;[m
+[32m+[m[32m                aft= aft.next;[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m[32m        return head;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public static ListNode deleteAllDuplicates(ListNode head) {[m
+[32m+[m[32m        if(head == null || head.next==null) return head;[m
+[32m+[m[32m        ListNode root=new ListNode(0);[m
+[32m+[m[32m        root.next=head;[m
+[32m+[m[32m        ListNode pre=root.next.next;[m
+[32m+[m[32m        ListNode mid=root.next;[m
+[32m+[m[32m        ListNode aft=root;[m
+[32m+[m[32m        while (pre != null){[m
+[32m+[m[32m            if(pre.val==mid.val){[m
+[32m+[m[32m                if(pre.next!=null&&pre.next.val==pre.val){[m
+[32m+[m[32m                    pre=pre.next;[m
+[32m+[m[32m                }else {[m
+[32m+[m[32m                    mid=pre.next;[m
+[32m+[m[32m                    aft.next=pre.next;[m
+[32m+[m[32m                    if(pre.next!=null){[m
+[32m+[m[32m                        pre=pre.next.next;[m
+[32m+[m[32m                    }else {[m
+[32m+[m[32m                        break;[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }else {[m
+[32m+[m[32m                aft=aft.next;[m
+[32m+[m[32m                mid=mid.next;[m
+[32m+[m[32m                pre=pre.next;[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m[32m        return root.next;[m
+[32m+[m[32m    }[m
+[32m+[m
+     public static void main(String[] args) {[m
+         ListNode listNode = new ListNode(1);[m
+[31m-        listNode.next = new ListNode(9);[m
+[31m-        listNode.next.next = new ListNode(5);[m
+[32m+[m[32m        listNode.next = new ListNode(1);[m
+[32m+[m[32m        listNode.next.next = new ListNode(3);[m
+         listNode.next.next.next = new ListNode(3);[m
+[31m-        ListNode node = sortList(listNode);[m
+[32m+[m[32m        listNode.next.next.next.next = new ListNode(5);[m
+[32m+[m[32m        ListNode node = listNode;[m
+[32m+[m[32m        node=deleteAllDuplicates(node);[m
+         while (node != null) {[m
+             System.out.print(node.val + "->");[m
+             node = node.next;[m

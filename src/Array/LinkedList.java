@@ -191,19 +191,49 @@ public class LinkedList {
         return dummy.next;
     }
 
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if(l1 == null) return l2;
+        if(l2 == null) return l1;
+        ListNode mergeHead;
+        if(l1.val < l2.val){
+            mergeHead = l1;
+            mergeHead.next = mergeTwoLists(l1.next, l2);
+        }
+        else{
+            mergeHead = l2;
+            mergeHead.next = mergeTwoLists(l1, l2.next);
+        }
+        return mergeHead;
+    }
+
+    public static boolean hasCycle(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
-        ListNode listNode = new ListNode(1);
-        listNode.next = new ListNode(1);
-//        listNode.next.next = new ListNode(1);
-//        listNode.next.next.next = new ListNode(2);
-//        listNode.next.next.next.next = new ListNode(5);
+        ListNode listNode = new ListNode(2);
+        listNode.next = new ListNode(4);
+        listNode.next.next = new ListNode(6);
+        listNode.next.next.next = new ListNode(9);
+        listNode.next.next.next.next =listNode.next.next;
         ListNode node = listNode;
-        node=partition(node, 2);
-        while (node != null) {
+        int i=0;
+        while (node != null && i<100) {
             System.out.print(node.val + "->");
             node = node.next;
+            i++;
         }
         System.out.print("null");
+        System.out.println(hasCycle(node));
     }
 }
 
